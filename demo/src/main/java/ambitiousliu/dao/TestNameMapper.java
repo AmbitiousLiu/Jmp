@@ -1,0 +1,9 @@
+package ambitiousliu.dao;
+
+import ambitiousliu.entity.TestName;
+import io.github.ambitiousliu.jmp.mapper.JmpMapper;
+import org.apache.ibatis.annotations.Mapper;
+
+@Mapper
+public interface TestNameMapper extends JmpMapper<TestName> {
+}
