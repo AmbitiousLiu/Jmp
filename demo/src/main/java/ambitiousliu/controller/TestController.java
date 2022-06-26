@@ -21,7 +21,7 @@ public class TestController {
 
     @GetMapping("/test")
     public List<TestName> get() {
-        Page<TestName> testNamePage = service.joinByPage(new Test(), JoinMode.LEFT_JOIN, new Name(), Test::getName, Name::getName, new Page<>(1, 1), OrderMode.DESC.by(Test::getName));
+        Page<TestName> testNamePage = service.joinByPage(new Test(), JoinMode.LEFT_JOIN, new Name(), Test::getName, Name::getName, new Page<>(1, 10), OrderMode.DESC.by(Test::getName));
         return testNamePage.getRecords();
     }
 }

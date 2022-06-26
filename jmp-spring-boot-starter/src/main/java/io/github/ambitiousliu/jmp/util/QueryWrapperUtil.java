@@ -34,7 +34,7 @@ public class QueryWrapperUtil {
             try {
                 invoke = reflector.getGetInvoker(entry.getKey().getName()).invoke(entity, null);
             } catch (IllegalAccessException | InvocationTargetException e) {
-                throw new JmpException("执行getter方法失败", e);
+                throw new JmpException("invoke getter function error", e);
             }
             queryWrapper.eq(entry.getValue(), invoke);
         }

@@ -22,7 +22,7 @@ public class ColumnContext {
         Class<?> aClass = lambda.getInstantiatedType();
         TableInfo tableInfo = TableInfoHelper.getTableInfo(aClass);
         if (tableInfo == null) {
-            throw new ParseException("未找到实体类对应的表信息，请确保有该实体对应的mapper");
+            throw new ParseException("can not find table info, make sure the entity has target mapper");
         }
         List<TableFieldInfo> fieldList = tableInfo.getFieldList();
         String fieldName = PropertyNamer.methodToProperty(lambda.getImplMethodName());
@@ -31,6 +31,6 @@ public class ColumnContext {
                 return tableFieldInfo.getColumn();
             }
         }
-        throw new ParseException("找不到属性: " + column);
+        throw new ParseException("can not find column: " + column);
     }
 }

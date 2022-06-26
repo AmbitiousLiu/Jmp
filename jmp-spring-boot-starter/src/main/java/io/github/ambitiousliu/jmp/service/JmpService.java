@@ -1,27 +1,20 @@
 package io.github.ambitiousliu.jmp.service;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Assert;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.conditions.query.ChainQuery;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
 import com.baomidou.mybatisplus.extension.conditions.update.ChainUpdate;
 import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.conditions.update.UpdateChainWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.toolkit.ChainWrappers;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import io.github.ambitiousliu.jmp.constant.JoinMode;
-import io.github.ambitiousliu.jmp.constant.OrderMode;
-import io.github.ambitiousliu.jmp.context.ColumnContext;
 import io.github.ambitiousliu.jmp.exception.ExecuteException;
 import io.github.ambitiousliu.jmp.mapper.JmpMapper;
-import io.github.ambitiousliu.jmp.sql.join.Join;
 import io.github.ambitiousliu.jmp.util.QueryWrapperUtil;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -447,95 +440,4 @@ public interface JmpService<T> {
         return update(entity, updateWrapper) || saveOrUpdate(entity);
     }
 
-    /**
-     * 构造join对象
-     *
-     * @param entity1 表1
-     * @param joinMode join模式 {@link JoinMode}
-     * @param entity2 表2
-     * @param column1 表1的连接字段
-     * @param column2 表2的连接字段
-     * @param <M> 表1的实体类
-     * @param <N> 表2的实体类
-     * @return Join对象 {@link Join}
-     */
-    default <M, N> Join<M, N> mkJoin(M entity1, JoinMode joinMode, N entity2, SFunction<M, ?> column1, SFunction<N, ?> column2) {
-        String c1 = ColumnContext.parse(column1);
-        String c2 = ColumnContext.parse(column2);
-        return new Join<>(entity1, joinMode, entity2, c1, c2);
-    }
-
-    /**
-     * 联表查所有数据
-     *
-     * @param entity1 表1
-     * @param joinMode join模式 {@link JoinMode}
-     * @param entity2 表2
-     * @param column1 表1的连接字段
-     * @param column2 表2的连接字段
-     * @param <M> 表1的实体类
-     * @param <N> 表2的实体类
-     * @return 对象列表
-     */
-    default <M, N> List<T> joinAll(M entity1, JoinMode joinMode, N entity2, SFunction<M, ?> column1, SFunction<N, ?> column2) {
-        Join<M, N> join = mkJoin(entity1, joinMode, entity2, column1, column2);
-        return getBaseMapper().joinAll(join.mkSql(), join.mkQueryWrapper());
-    }
-
-    /**
-     * 联表查所有并排序
-     *
-     * @param entity1 表1
-     * @param joinMode join模式 {@link JoinMode}
-     * @param entity2 表2
-     * @param column1 表1的连接字段
-     * @param column2 表2的连接字段
-     * @param orderMode 排序对象, 仅支持M类型(表1)的一个字段排序 {@link OrderMode}
-     * @param <M> 表1的实体类
-     * @param <N> 表2的实体类
-     * @return 对象列表
-     */
-    default <M, N> List<T> joinAll(M entity1, JoinMode joinMode, N entity2, SFunction<M, ?> column1, SFunction<N, ?> column2, OrderMode orderMode) {
-        Join<M, N> join = mkJoin(entity1, joinMode, entity2, column1, column2);
-        QueryWrapper<T> queryWrapper = join.setOrder(join.mkQueryWrapper(), orderMode);
-        return getBaseMapper().joinAll(join.mkSql(), queryWrapper);
-    }
-
-    /**
-     * 分页联表查询
-     *
-     * @param entity1 表1
-     * @param joinMode join模式 {@link JoinMode}
-     * @param entity2 表2
-     * @param column1 表1的连接字段
-     * @param column2 表2的连接字段
-     * @param page 分页对象 {@link Page}
-     * @param <M> 表1的实体类
-     * @param <N> 表2的实体类
-     * @return 分页数据
-     */
-    default <M, N> Page<T> joinByPage(M entity1, JoinMode joinMode, N entity2, SFunction<M, ?> column1, SFunction<N, ?> column2, Page<T> page) {
-        Join<M, N> join = mkJoin(entity1, joinMode, entity2, column1, column2);
-        return getBaseMapper().joinByPage(join.mkSql(), join.mkQueryWrapper(), page);
-    }
-
-    /**
-     * 分页联表排序查询
-     *
-     * @param entity1 表1
-     * @param joinMode join模式 {@link JoinMode}
-     * @param entity2 表2
-     * @param column1 表1的连接字段
-     * @param column2 表2的连接字段
-     * @param page 分页对象 {@link Page}
-     * @param orderMode 排序对象 {@link OrderMode}
-     * @param <M> 表1的实体类
-     * @param <N> 表2的实体类
-     * @return 分页数据
-     */
-    default <M, N> Page<T> joinByPage(M entity1, JoinMode joinMode, N entity2, SFunction<M, ?> column1, SFunction<N, ?> column2, Page<T> page, OrderMode orderMode) {
-        Join<M, N> join = mkJoin(entity1, joinMode, entity2, column1, column2);
-        QueryWrapper<T> queryWrapper = join.setOrder(join.mkQueryWrapper(), orderMode);
-        return getBaseMapper().joinByPage(join.mkSql(), queryWrapper, page);
-    }
 }

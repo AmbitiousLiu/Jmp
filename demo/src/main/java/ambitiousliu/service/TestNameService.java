@@ -1,7 +1,7 @@
 package ambitiousliu.service;
 
 import ambitiousliu.entity.TestName;
-import io.github.ambitiousliu.jmp.service.JmpService;
+import io.github.ambitiousliu.jmp.service.JmpJoinService;
 
-public interface TestNameService extends JmpService<TestName> {
+public interface TestNameService extends JmpJoinService<TestName> {
 }
