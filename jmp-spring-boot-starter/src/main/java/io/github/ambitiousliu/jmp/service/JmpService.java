@@ -84,7 +84,7 @@ public interface JmpService<T> {
      * @param entity 有主键的实体
      */
     default boolean removeById(T entity) {
-        return SqlHelper.retBool(getBaseMapper().deleteById(QueryWrapperUtil.mkIdQueryWrapper(entity)));
+        return SqlHelper.retBool(getBaseMapper().delete(QueryWrapperUtil.mkIdQueryWrapper(entity)));
     }
 
     /**
