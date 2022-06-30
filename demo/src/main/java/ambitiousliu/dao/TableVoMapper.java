@@ -1,9 +1,9 @@
 package ambitiousliu.dao;
 
-import ambitiousliu.entity.TestName;
+import ambitiousliu.entity.TableVo;
 import io.github.ambitiousliu.jmp.mapper.JmpJoinMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface TestNameMapper extends JmpJoinMapper<TestName> {
+public interface TableVoMapper extends JmpJoinMapper<TableVo> {
 }

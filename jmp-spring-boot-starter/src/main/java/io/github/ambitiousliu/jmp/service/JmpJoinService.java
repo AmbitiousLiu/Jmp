@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.github.ambitiousliu.jmp.constant.JoinMode;
 import io.github.ambitiousliu.jmp.constant.OrderMode;
-import io.github.ambitiousliu.jmp.context.ColumnContext;
 import io.github.ambitiousliu.jmp.mapper.JmpJoinMapper;
 import io.github.ambitiousliu.jmp.sql.join.Join;
 
@@ -36,7 +35,7 @@ public interface JmpJoinService<T> {
      * @param <N> 表2的实体类
      * @return 对象列表
      */
-    default <M, N> List<T> joinAll(M entity1, JoinMode joinMode, N entity2, SFunction<M, ?> column1, SFunction<N, ?> column2) {
+    default <M, N> List<T> join(M entity1, JoinMode joinMode, N entity2, SFunction<M, ?> column1, SFunction<N, ?> column2) {
         Join<M, N> join = new Join<>(entity1, joinMode, entity2, column1, column2);
         return getBaseMapper().joinAll(join.mkSql(), join.mkQueryWrapper());
     }
@@ -54,7 +53,7 @@ public interface JmpJoinService<T> {
      * @param <N> 表2的实体类
      * @return 对象列表
      */
-    default <M, N> List<T> joinAll(M entity1, JoinMode joinMode, N entity2, SFunction<M, ?> column1, SFunction<N, ?> column2, OrderMode orderMode) {
+    default <M, N> List<T> join(M entity1, JoinMode joinMode, N entity2, SFunction<M, ?> column1, SFunction<N, ?> column2, OrderMode orderMode) {
         Join<M, N> join = new Join<>(entity1, joinMode, entity2, column1, column2);
         QueryWrapper<T> queryWrapper = join.setOrder(join.mkQueryWrapper(), orderMode);
         return getBaseMapper().joinAll(join.mkSql(), queryWrapper);
@@ -73,7 +72,7 @@ public interface JmpJoinService<T> {
      * @param <N> 表2的实体类
      * @return 分页数据
      */
-    default <M, N> Page<T> joinByPage(M entity1, JoinMode joinMode, N entity2, SFunction<M, ?> column1, SFunction<N, ?> column2, Page<T> page) {
+    default <M, N> Page<T> join(M entity1, JoinMode joinMode, N entity2, SFunction<M, ?> column1, SFunction<N, ?> column2, Page<?> page) {
         Join<M, N> join = new Join<>(entity1, joinMode, entity2, column1, column2);
         return getBaseMapper().joinByPage(join.mkSql(), join.mkQueryWrapper(), page);
     }
@@ -92,7 +91,7 @@ public interface JmpJoinService<T> {
      * @param <N> 表2的实体类
      * @return 分页数据
      */
-    default <M, N> Page<T> joinByPage(M entity1, JoinMode joinMode, N entity2, SFunction<M, ?> column1, SFunction<N, ?> column2, Page<T> page, OrderMode orderMode) {
+    default <M, N> Page<T> join(M entity1, JoinMode joinMode, N entity2, SFunction<M, ?> column1, SFunction<N, ?> column2, Page<?> page, OrderMode orderMode) {
         Join<M, N> join = new Join<>(entity1, joinMode, entity2, column1, column2);
         QueryWrapper<T> queryWrapper = join.setOrder(join.mkQueryWrapper(), orderMode);
         return getBaseMapper().joinByPage(join.mkSql(), queryWrapper, page);

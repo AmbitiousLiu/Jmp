@@ -1,9 +1,10 @@
 package ambitiousliu.controller;
 
-import ambitiousliu.entity.Name;
-import ambitiousliu.entity.Test;
-import ambitiousliu.entity.TestName;
-import ambitiousliu.service.TestNameService;
+import ambitiousliu.entity.Table2;
+import ambitiousliu.entity.Table1;
+import ambitiousliu.entity.Table3;
+import ambitiousliu.entity.TableVo;
+import ambitiousliu.service.TableVoService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.github.ambitiousliu.jmp.constant.JoinMode;
 import io.github.ambitiousliu.jmp.constant.OrderMode;
@@ -17,11 +18,13 @@ import java.util.List;
 public class TestController {
 
     @Autowired
-    TestNameService service;
+    TableVoService service;
 
     @GetMapping("/test")
-    public List<TestName> get() {
-        Page<TestName> testNamePage = service.joinByPage(new Test(), JoinMode.LEFT_JOIN, new Name(), Test::getName, Name::getName, new Page<>(1, 10), OrderMode.DESC.by(Test::getName));
+    public List<TableVo> get() {
+        Page<TableVo> testNamePage = service.join(new Table1(), JoinMode.LEFT_JOIN, new Table2(), Table1::getName, Table2::getName, new Page<>(1, 10), OrderMode.DESC.by(Table1::getName));
+        Page<TableVo> tableVoPage = service.join(new Table1(), JoinMode.LEFT_JOIN, new Table3(), Table1::getId, Table3::getId, new Page<>(1, 10));
+
         return testNamePage.getRecords();
     }
 }

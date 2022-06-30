@@ -16,7 +16,7 @@ import java.util.List;
  */
 public interface JmpJoinMapper<T> extends Mapper<T> {
     @Select("${sql} ${ew.customSqlSegment}")
-    Page<T> joinByPage(@Param("sql") String selectSql, @Param(Constants.WRAPPER) Wrapper<T> queryWrapper, Page<T> page);
+    Page<T> joinByPage(@Param("sql") String selectSql, @Param(Constants.WRAPPER) Wrapper<T> queryWrapper, Page<?> page);
 
     @Select("${sql} ${ew.customSqlSegment}")
     List<T> joinAll(@Param("sql") String selectSql, @Param(Constants.WRAPPER) Wrapper<T> queryWrapper);

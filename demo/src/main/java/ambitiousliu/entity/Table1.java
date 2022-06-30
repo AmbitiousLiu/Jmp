@@ -1,9 +1,10 @@
 package ambitiousliu.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.github.ambitiousliu.jmp.annotation.JmpId;
 
-
-public class Test {
+@TableName("test")
+public class Table1 {
 
     @JmpId
     Integer id;
@@ -17,7 +18,7 @@ public class Test {
         return id;
     }
 
-    public Test setId(Integer id) {
+    public Table1 setId(Integer id) {
         this.id = id;
         return this;
     }
@@ -26,7 +27,7 @@ public class Test {
         return name;
     }
 
-    public Test setName(String name) {
+    public Table1 setName(String name) {
         this.name = name;
         return this;
     }
@@ -35,7 +36,7 @@ public class Test {
         return age;
     }
 
-    public Test setAge(Integer age) {
+    public Table1 setAge(Integer age) {
         this.age = age;
         return this;
     }

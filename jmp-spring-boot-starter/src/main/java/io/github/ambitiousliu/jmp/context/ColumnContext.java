@@ -24,8 +24,11 @@ public class ColumnContext {
         if (tableInfo == null) {
             throw new ParseException("can not find table info, make sure the entity has target mapper");
         }
-        List<TableFieldInfo> fieldList = tableInfo.getFieldList();
         String fieldName = PropertyNamer.methodToProperty(lambda.getImplMethodName());
+        if (fieldName.equals(tableInfo.getKeyProperty())) {
+            return tableInfo.getKeyColumn();
+        }
+        List<TableFieldInfo> fieldList = tableInfo.getFieldList();
         for (TableFieldInfo tableFieldInfo : fieldList) {
             if (tableFieldInfo.getField().getName().equals(fieldName)) {
                 return tableFieldInfo.getColumn();

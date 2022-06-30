@@ -50,6 +50,7 @@ public class Join<M, N> extends AbstractJoin {
         Assert.notNull(orderMode, "order mode can not be null");
         Assert.notNull(orderMode.getColumn(), "order column can not be null");
         return queryWrapper.orderBy(true, orderMode.isAsc(),
+                // todo add b.
                 "a." + ColumnContext.parse(orderMode.getColumn()));
     }
 }
