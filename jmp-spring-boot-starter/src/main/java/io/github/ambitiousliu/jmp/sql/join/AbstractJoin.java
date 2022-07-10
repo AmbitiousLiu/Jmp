@@ -1,49 +1,30 @@
 package io.github.ambitiousliu.jmp.sql.join;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.TableFieldInfo;
-import com.baomidou.mybatisplus.core.metadata.TableInfo;
-import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
-import io.github.ambitiousliu.jmp.constant.OrderMode;
-import io.github.ambitiousliu.jmp.exception.ParseException;
-import io.github.ambitiousliu.jmp.sql.SqlMaker;
-import org.apache.ibatis.reflection.Reflector;
-import org.apache.ibatis.reflection.invoker.Invoker;
-import org.springframework.util.StringUtils;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.Objects;
+import io.github.ambitiousliu.jmp.conditions.AbstractJoinWrapper;
+import io.github.ambitiousliu.jmp.conditions.JoinWrapper;
 
 /**
  * @author ambitious liu
- * @since 2022-06-19
+ * @since 2022/7/10
  */
-public abstract class AbstractJoin implements SqlMaker {
-    public <T, E> QueryWrapper<T> mkQueryWrapper(String prefix, E entity, QueryWrapper<T> queryWrapper) {
-        TableInfo tableInfo = TableInfoHelper.getTableInfo(entity.getClass());
-        Reflector reflector = new Reflector(entity.getClass());
-        if (!StringUtils.hasText(prefix)) {
-            prefix = tableInfo.getTableName();
-        }
-        if (queryWrapper == null) {
-            queryWrapper = new QueryWrapper<>();
-        }
-        for (TableFieldInfo tableFieldInfo : tableInfo.getFieldList()) {
-            Invoker getInvoker = reflector.getGetInvoker(tableFieldInfo.getField().getName());
-            Object invoke;
-            try {
-                invoke = getInvoker.invoke(entity, null);
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                throw new ParseException(e);
-            }
-            if (!Objects.isNull(invoke)) {
-                queryWrapper.eq(prefix + "." + tableFieldInfo.getColumn(), invoke);
-            }
-        }
-        return queryWrapper;
+public abstract class AbstractJoin<R> {
+    String sql;
+    AbstractJoinWrapper<R, ?, ?> wrapper;
+
+    public void prepare() {
+        sql = mkSql();
+        wrapper = mkWrapper();
     }
 
-    abstract <R> QueryWrapper<R> mkQueryWrapper();
+    public String getSql() {
+        return sql;
+    }
 
-    abstract <R> QueryWrapper<R> setOrder(QueryWrapper<R> queryWrapper, OrderMode orderMode);
+    public AbstractJoinWrapper<R, ?, ?> getTargetWrapper() {
+        return wrapper;
+    }
+
+    protected abstract String mkSql();
+
+    protected abstract AbstractJoinWrapper<R, ?, ?> mkWrapper();
 }

@@ -20,4 +20,8 @@ public class JmpConstant {
             "   /_ _  _ \n" +
             "(_// / //_/\n" +
             "       /   ";
+
+    public static final String joinParamName = "join";
+
+    public static final String dot = ".";
 }
