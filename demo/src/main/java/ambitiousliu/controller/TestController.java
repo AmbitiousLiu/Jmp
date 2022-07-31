@@ -2,6 +2,7 @@ package ambitiousliu.controller;
 
 import ambitiousliu.entity.Table2;
 import ambitiousliu.entity.Table1;
+import ambitiousliu.entity.Table3;
 import ambitiousliu.entity.TableVo;
 import ambitiousliu.service.TableVoService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -10,6 +11,7 @@ import io.github.ambitiousliu.jmp.conditions.LambdaJoinWrapper;
 import io.github.ambitiousliu.jmp.constant.JoinMode;
 import io.github.ambitiousliu.jmp.sql.join.db.Join2;
 import io.github.ambitiousliu.jmp.sql.join.db.LambdaJoin2;
+import io.github.ambitiousliu.jmp.sql.join.tp.Join3;
 import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -61,5 +63,21 @@ public class TestController {
         Page<TableVo> testNamePage = service.join(lambdaJoin2, new Page<>(1, 10));
 
         return testNamePage.getRecords();
+    }
+
+    @GetMapping("/test3")
+    public List<TableVo> get3() {
+        Join3<Table2, Table1, Table3, TableVo> join3 = new Join3<>(
+                new Table2(),
+                JoinMode.LEFT_JOIN,
+                new Table1(),
+                Table2::getName,
+                Table1::getName,
+                JoinMode.LEFT_JOIN,
+                new Table3(),
+                Table1::getId,
+                Table3::getId
+        );
+        return service.join(join3);
     }
 }
