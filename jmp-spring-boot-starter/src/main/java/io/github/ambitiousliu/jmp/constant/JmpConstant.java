@@ -13,7 +13,7 @@ public class JmpConstant {
     /**
      * 版本
      */
-    public static final String version = "2.0.0";
+    public static final String version = "3.x";
 
     public static final String banner =
             "  _        \n" +
