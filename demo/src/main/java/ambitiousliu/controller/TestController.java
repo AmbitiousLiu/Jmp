@@ -4,7 +4,9 @@ import ambitiousliu.entity.Table2;
 import ambitiousliu.entity.Table1;
 import ambitiousliu.entity.Table3;
 import ambitiousliu.entity.TableVo;
+import ambitiousliu.service.Table1Service;
 import ambitiousliu.service.TableVoService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.github.ambitiousliu.jmp.conditions.JoinWrapper;
 import io.github.ambitiousliu.jmp.conditions.LambdaJoinWrapper;
@@ -12,11 +14,13 @@ import io.github.ambitiousliu.jmp.constant.JoinMode;
 import io.github.ambitiousliu.jmp.sql.join.db.Join2;
 import io.github.ambitiousliu.jmp.sql.join.db.LambdaJoin2;
 import io.github.ambitiousliu.jmp.sql.join.tp.Join3;
+import io.github.ambitiousliu.jmp.util.WrapperInUtil;
 import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -24,6 +28,8 @@ public class TestController {
 
     @Autowired
     TableVoService service;
+    @Autowired
+    Table1Service table1Service;
 
     @GetMapping("/test")
     public List<TableVo> get() {
@@ -79,5 +85,11 @@ public class TestController {
                 Table3::getId
         );
         return service.join(join3);
+    }
+
+    @GetMapping("/test4")
+    public List<Table1> get4() {
+        LambdaQueryWrapper<Table1> in = WrapperInUtil.in(new LambdaQueryWrapper<>(), Table1::getId, new ArrayList<Integer>(){{add(1);}}, WrapperInUtil::LIMIT_ZERO);
+        return table1Service.list(in);
     }
 }

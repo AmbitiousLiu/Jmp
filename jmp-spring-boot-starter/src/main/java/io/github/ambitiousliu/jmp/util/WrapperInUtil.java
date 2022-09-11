@@ -20,11 +20,11 @@ public class WrapperInUtil {
     /**
      * 推荐使用 isNull 更符合一般逻辑
      */
-    public static <T, E, R extends AbstractWrapper<E, T, R>> R in(R wrapper, T column, Collection<E> collection) {
+    public static <T, R extends AbstractWrapper<?, T, R>> R in(R wrapper, T column, Collection<?> collection) {
         return WrapperInUtil.in(wrapper, column, collection, WrapperInUtil::IS_NULL);
     }
 
-    public static <T, E, R extends AbstractWrapper<E, T, R>> R in(R wrapper, T column, Collection<E> collection, BiConsumer<R, T> emptyProcessor) {
+    public static <T, R extends AbstractWrapper<?, T, R>> R in(R wrapper, T column, Collection<?> collection, BiConsumer<R, T> emptyProcessor) {
         if (CollectionUtils.isEmpty(collection)) {
             emptyProcessor.accept(wrapper, column);
         } else {
@@ -33,7 +33,7 @@ public class WrapperInUtil {
         return wrapper;
     }
 
-    public static <T, E, R extends AbstractWrapper<E, T, R>> R in(R wrapper, T column, Collection<E> collection, Consumer<R> emptyProcessor) {
+    public static <T, R extends AbstractWrapper<?, T, R>> R in(R wrapper, T column, Collection<?> collection, Consumer<R> emptyProcessor) {
         if (CollectionUtils.isEmpty(collection)) {
             emptyProcessor.accept(wrapper);
         } else {
@@ -42,7 +42,7 @@ public class WrapperInUtil {
         return wrapper;
     }
 
-    public static <T, E, R extends AbstractWrapper<E, T, R>> R in(R wrapper, T column, Collection<E> collection, Runnable emptyProcessor) {
+    public static <T, R extends AbstractWrapper<?, T, R>> R in(R wrapper, T column, Collection<?> collection, Runnable emptyProcessor) {
         if (CollectionUtils.isEmpty(collection)) {
             emptyProcessor.run();
         } else {
