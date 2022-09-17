@@ -32,6 +32,13 @@ public class WrapperInUtil {
         }
         return wrapper;
     }
+    public static <T, R extends AbstractWrapper<?, T, R>> R in(R wrapper, T column, Collection<?> collection, BiConsumer<R, T> nullProcessor, BiConsumer<R, T> emptyProcessor) {
+        if (collection == null) {
+            nullProcessor.accept(wrapper, column);
+            return wrapper;
+        }
+        return in(wrapper, column, collection, emptyProcessor);
+    }
 
     public static <T, R extends AbstractWrapper<?, T, R>> R in(R wrapper, T column, Collection<?> collection, Consumer<R> emptyProcessor) {
         if (CollectionUtils.isEmpty(collection)) {
@@ -41,6 +48,13 @@ public class WrapperInUtil {
         }
         return wrapper;
     }
+    public static <T, R extends AbstractWrapper<?, T, R>> R in(R wrapper, T column, Collection<?> collection, Consumer<R> nullProcessor, Consumer<R> emptyProcessor) {
+        if (collection == null) {
+            nullProcessor.accept(wrapper);
+            return wrapper;
+        }
+        return in(wrapper, column, collection, emptyProcessor);
+    }
 
     public static <T, R extends AbstractWrapper<?, T, R>> R in(R wrapper, T column, Collection<?> collection, Runnable emptyProcessor) {
         if (CollectionUtils.isEmpty(collection)) {
@@ -49,6 +63,13 @@ public class WrapperInUtil {
             wrapper.in(column, collection);
         }
         return wrapper;
+    }
+    public static <T, R extends AbstractWrapper<?, T, R>> R in(R wrapper, T column, Collection<?> collection, Runnable nullProcessor, Runnable emptyProcessor) {
+        if (collection == null) {
+            nullProcessor.run();
+            return wrapper;
+        }
+        return in(wrapper, column, collection, emptyProcessor);
     }
 
 
